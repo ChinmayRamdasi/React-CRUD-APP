@@ -1,0 +1,15 @@
+.card {
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+
+.p-datatable {
+  border: 1px solid #ccc;
+}
+
+.p-datatable .p-datatable-thead > tr > th,
+.p-datatable .p-datatable-tbody > tr > td {
+  border: 2px solid black;
+}

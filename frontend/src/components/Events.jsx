@@ -10,6 +10,8 @@ const Events = ({ onSubmit }) => {
     address: ""
   });
 
+  
+
   //Function to handle change in text field
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +28,7 @@ const Events = ({ onSubmit }) => {
 
   return (
     <div>
-      <h3>Text Box</h3>
+      <h3>Form </h3>
       <TextField
         name="name"
         label="Enter Name"

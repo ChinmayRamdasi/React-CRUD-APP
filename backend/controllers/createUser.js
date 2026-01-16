@@ -1,4 +1,5 @@
 const { connectDB } = require("../dbconfig/connection")
+const {get:_get}= require("lodash")
 
 
 
@@ -44,11 +45,25 @@ const createUser= async (req,res)=>{
 
 const getUser=async(req,res)=>{
     try{
+        let filters=req.query
+         let offset =_get(filters, "offset") >= 0 ? _get(filters, "offset") : _get(filters, "pageNo") && _get(filters, "limit") 
+         ? (_get(filters, "pageNo") - 1) * _get(filters, "limit") : 20;
+        let limit = _get(filters, "limit") ? _get(filters, "limit") : 20;
+        
+        
         const db= await connectDB()
-        const data= await db.query("SELECT * from users")
+
+        let query=`select count(*) OVER() as totalCount ,name,address,id from sample.users group by name,address,id`
+
+        if(_get(filters,"pageNo")){
+            query= query.concat(` limit ${limit} OFFSET ${offset}`)
+        }
+
+        const data= await db.query(query)
 
         return res.json({
-            data:data[0]
+            data:data[0],
+            count:data[0][0]?.totalCount
         })
     }
     catch(error){   

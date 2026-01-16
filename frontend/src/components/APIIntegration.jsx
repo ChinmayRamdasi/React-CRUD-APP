@@ -7,7 +7,9 @@ import {
  Tooltip,
  Legend,
  ResponsiveContainer,
- CartesianGrid
+ CartesianGrid,
+ BarChart,
+ Bar
 } from "recharts";
 
 
@@ -46,7 +48,7 @@ const fetchGraph= async ()=>{
 
  return (
    <div style={{ width: "100%", height: "400px" }}>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="40%" height="70%">
         <LineChart
           data={graph}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -61,7 +63,23 @@ const fetchGraph= async ()=>{
           <Line type="monotone" dataKey="value1" stroke="#82ca9d" />
           <Line type="linear" dataKey="value2" stroke="blue" />
         </LineChart>
-      </ResponsiveContainer>
+     
+
+    <BarChart data={graph}>
+      <XAxis
+        dataKey="date"
+        interval={0}
+        textAnchor="end"
+        height={80}
+        label={{ position: 'center', value: 'XAxis title', dx:60}}
+      />
+      <YAxis label={{ position: 'insideTopLeft', value: 'YAxis title', angle: -90, dy: 60 }} />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="value1" fill="#8884d8" />
+      <Bar dataKey="value2" fill="#dddd" />
+    </BarChart>
+     </ResponsiveContainer>
     </div>
  );
 };

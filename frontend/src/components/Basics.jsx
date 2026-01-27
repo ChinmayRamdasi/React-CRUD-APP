@@ -141,7 +141,7 @@ const onChange=(key)=>{
     <>
     <h2>Basics about JavaScript</h2>
     <div className='collapse-div'>
-        <Collapse items={items} onChange={onChange} bordered={false} />
+        <Collapse items={items} onChange={onChange} bordered={false} defaultActiveKey={["1"]} />
     </div>
     </>
     

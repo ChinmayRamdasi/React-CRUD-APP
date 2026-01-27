@@ -1,25 +1,23 @@
 const mysql = require('mysql2/promise');
+const dotenv = require('dotenv');
 
+dotenv.config(); // ✅ VERY IMPORTANT
 
-const connectDB=async()=>{
-    try{
-        const db = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: 'ind123',
-            database: 'sample'
-        });
-        console.log('Connected to MySQL database');
-        return db
-            }
-            catch(err){
-        db.connect((err) => {
-            if (err) {
-                console.error('Database connection failed:', err);
-                return;
-            }
-        });
-            }
-}
+const connectDB = async () => {
+  try {
+    const db = await mysql.createConnection({
+      host: process.env.HOST,
+      user: process.env.USERNAME,
+      password: process.env.PASSWORD,
+      database: process.env.DATABASE,
+    });
 
-module.exports = {connectDB};
+    console.log('✅ Connected to MySQL database');
+    return db;
+  } catch (err) {
+    console.error('❌ Database connection failed:', err.message);
+    throw err; // important so app knows connection failed
+  }
+};
+
+module.exports = { connectDB };

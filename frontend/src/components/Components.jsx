@@ -2,6 +2,13 @@ import React, { useEffect, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import Events from "./Events";
 import "./Components.css";
+import {
+  fetchUsers,
+  postUsers,
+  handleDelete,
+  updateUsers,
+  onCellValueChanged
+} from "../api/integration";
 
 const Components = () => {
   const [rowData, setRowData] = useState([]);
@@ -22,7 +29,7 @@ const Components = () => {
         color: "red",
         fontSize: "18px"
       }}
-      onClick={() => handleDelete(params.data.id)}
+      onClick={() => handleDelete(params.data.id, () => fetchUsers(setRowData, setLoading))}
       title="Delete"
     >
       🗑️
@@ -39,104 +46,14 @@ const Components = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(setRowData, setLoading);
   }, []);
 
-
-  const handleDelete=async (id)=>{
-    try{
-    await fetch("http://localhost:5000/users/deleteUser",{
-      method:"DELETE",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({id})
-    })
-
-    fetchUsers()
-    }
-    catch(e){
-      console.log(e)
-    }
-  }
-
-  // 🔹 GET
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch("http://localhost:5000/users/getUser");
-      const data = await res.json();
-
-      setRowData(
-        data.data.map((u) => ({
-          id: u.id,
-          name: u.name,
-          address: u.address
-        }))
-      );
-    } catch (e) {
-      console.error("Fetch failed", e);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 🔹 POST
-  const postUsers = async ({ name, address }) => {
-    try {
-      setLoading(true);
-      await fetch("http://localhost:5000/users/createUser", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, address })
-      });
-      await fetchUsers();
-    } catch (e) {
-      console.error("Create failed", e);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 🔹 UPDATE (ONLY CHANGED FIELDS)
-  const updateUsers = async ({id, name, address}) => {
-  
-
-   // console.log("UPDATE PAYLOAD:", payload);
-
-    await fetch("http://localhost:5000/users/updateUser", {
-      method: "PUT", // preferred
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({id,name,address})
-    });
-  };
-
-  // 🔹 AG GRID EDIT HANDLER
- const onCellValueChanged = async (params) => {
-  const updatedrows = params.data;
-  // const oldData = params.oldData;
-
-  // optimistic UI update
-  setRowData((prev) =>
-    prev.map((row) =>
-      row.id === updatedrows.id ? updatedrows : row
-    )
-  );
-
-  try {
-    await updateUsers(updatedrows);
-  } catch (e) {
-    console.error("Update failed", e);
-
-    // rollback safely
-    params.node.setData(params.oldData);
-  }
-};
 
 
   return (
     <div>
-      <Events onSubmit={postUsers} />
+      <Events onSubmit={(userData) => postUsers(userData, setLoading, () => fetchUsers(setRowData, setLoading))} />
 
       {loading && <p>Loading...</p>}
 
@@ -150,7 +67,7 @@ const Components = () => {
           defaultColDef={defaultColDef}
           singleClickEdit={true}
           stopEditingWhenCellsLoseFocus={true}
-          onCellValueChanged={onCellValueChanged}
+          onCellValueChanged={(params) => onCellValueChanged(params, setRowData, updateUsers)}
           pagination={true}
           paginationPageSize={10}
         />

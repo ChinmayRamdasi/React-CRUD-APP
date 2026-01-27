@@ -27,6 +27,7 @@ const createUser= async (req,res)=>{
         })
     }
     else{
+    if(body.name != "" && body.address != ""){
             let data= await db.query(`INSERT INTO users(name,address)
                         VALUES
                             ('${body.name}','${body.address}');`)
@@ -36,7 +37,11 @@ const createUser= async (req,res)=>{
             return res.json({
                 msg:"Inserted"})
     }
+    else{
+        throw new Error("Payload Incorrect")
     }
+    }
+}
     catch(e){
         return res.json(e)
     }

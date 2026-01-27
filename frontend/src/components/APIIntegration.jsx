@@ -55,7 +55,7 @@ return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "16px" }}>
       
       {/* LINE CHART */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, minHeight: 0 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={graph}
@@ -79,8 +79,8 @@ return (
       </div>
 
       {/* BAR CHART */}
-      <div style={{ flex: 1 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <div style={{ flex: 1, minHeight: 0 }}>
+        <ResponsiveContainer width="80%" height="80%">
           <BarChart data={graph}>
             <XAxis
               dataKey="date"
@@ -100,39 +100,39 @@ return (
     </div>
 
     {/* RIGHT COLUMN – 1 GRAPH */}
-    <div style={{ flex: 1 }}>
-      <ResponsiveContainer width="100%" height="50%">
-        <AreaChart data={graph}>
-          <defs>
-            <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#f59e0b" />
-              <stop offset="95%" stopColor="#f59e0b" />
-            </linearGradient>
-            <linearGradient id="color2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#94a3b8" />
-              <stop offset="95%" stopColor="#94a3b8" />
-            </linearGradient>
-          </defs>
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
+        <ResponsiveContainer width="80%" height="45%">
+          <AreaChart data={graph}>
+            <defs>
+              <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#f59e0b" />
+                <stop offset="95%" stopColor="#f59e0b" />
+              </linearGradient>
+              <linearGradient id="color2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#94a3b8" />
+                <stop offset="95%" stopColor="#94a3b8" />
+              </linearGradient>
+            </defs>
 
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Area
-            type="monotone"
-            dataKey="value1"
-            stroke="#f59e0b"
-            fill="url(#colorUsers)"
-          />
-          <Area
-            type="monotone"
-            dataKey="value2"
-            stroke="rgba(102, 102, 255, 0.8)"
-            fill="url(#color2)"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Area
+              type="monotone"
+              dataKey="value1"
+              stroke="#f59e0b"
+              fill="url(#colorUsers)"
+            />
+            <Area
+              type="monotone"
+              dataKey="value2"
+              stroke="rgba(102, 102, 255, 0.8)"
+              fill="url(#color2)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
     </div>
 
   </div>

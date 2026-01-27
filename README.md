@@ -46,16 +46,26 @@ Make sure you have the following installed:
 ```bash
 git clone https://github.com/ChinmayRamdasi/React-CRUD-APP.git
 cd React-CRUD-APP
+```
+### 2 Frontend Setup
+
+```bash
+npm install
+npm start
+```
+
+### 3 Backend Setup
+
+```bash
+npm install
+npx nodemon
+
+```
+
+### DB Setup
+Used MySQL database to store the graph and user table data. 
+1. users table
+2. graph
+DB statements are already published in the code bases. 
 
 
-This project helps you understand:
-
-React component architecture
-
-State management using hooks
-
-Handling forms and user input
-
-Implementing CRUD functionality
-
-Organizing a React project

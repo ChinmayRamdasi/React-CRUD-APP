@@ -1,7 +1,7 @@
 // 🔹 GET
-export const fetchUsers = async (setRowData, setLoading) => {
+export const fetchUsers = async (setRowData, setLoading, gridRef) => {
   try {
-    setLoading(true);
+    gridRef.current?.showLoadingOverlay();
     const res = await fetch("http://localhost:5000/users/getUser");
     const data = await res.json();
 

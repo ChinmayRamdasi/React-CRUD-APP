@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import Events from "./Events";
 import "./Components.css";
@@ -12,6 +12,7 @@ import {
 
 const Components = () => {
   const [rowData, setRowData] = useState([]);
+  const gridRef = useRef(null); 
   const [loading, setLoading] = useState(false);
 
   const columnDefs = [
@@ -29,7 +30,7 @@ const Components = () => {
         color: "red",
         fontSize: "18px"
       }}
-      onClick={() => handleDelete(params.data.id, () => fetchUsers(setRowData, setLoading))}
+      onClick={() => handleDelete(params.data.id, () => fetchUsers(setRowData, setLoading, gridRef))}
       title="Delete"
     >
       🗑️
@@ -46,7 +47,7 @@ const Components = () => {
   };
 
   useEffect(() => {
-    fetchUsers(setRowData, setLoading);
+    fetchUsers(setRowData, setLoading, gridRef);
   }, []);
 
 
@@ -54,8 +55,6 @@ const Components = () => {
   return (
     <div>
       <Events onSubmit={(userData) => postUsers(userData, setLoading, () => fetchUsers(setRowData, setLoading))} />
-
-      {loading && <p>Loading...</p>}
 
       <div
         className="ag-theme-alpine custom-grid"
@@ -70,6 +69,9 @@ const Components = () => {
           onCellValueChanged={(params) => onCellValueChanged(params, setRowData, updateUsers)}
           pagination={true}
           paginationPageSize={10}
+          onGridReady={(params)=>{
+            gridRef.current=params.api;
+          }}
         />
       </div>
     </div>

@@ -30,7 +30,15 @@ const Components = () => {
         color: "red",
         fontSize: "18px"
       }}
-      onClick={() => handleDelete(params.data.id, () => fetchUsers(setRowData, setLoading, gridRef))}
+      onClick={() => {
+        const confirmDelete = window.confirm(
+          `Are you sure you want to delete user with ID ${params.data.id}?`
+        );
+
+        if(confirmDelete){
+          handleDelete(params.data.id,()=>fetchUsers(setRowData,setLoading,gridRef))
+        }
+      }}
       title="Delete"
     >
       🗑️
@@ -54,8 +62,7 @@ const Components = () => {
 
   return (
     <div>
-      <Events onSubmit={(userData) => postUsers(userData, setLoading, () => fetchUsers(setRowData, setLoading))} />
-
+      <Events onSubmit={(userData) =>postUsers(userData,setRowData,setLoading,() => fetchUsers(setRowData, setLoading, gridRef))} />
       <div
         className="ag-theme-alpine custom-grid"
         style={{ height: "400px", width: "100%", marginTop: 20 }}

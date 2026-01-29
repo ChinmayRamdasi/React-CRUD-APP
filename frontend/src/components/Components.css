@@ -22,3 +22,17 @@
 .custom-grid .ag-cell {
   font-size: 14px;
 }
+
+.p-dialog .p-dialog-header {
+  color: solid black;
+  font-weight: bold;
+}
+
+.p-button{
+  margin-top: 10px;
+  border-color: #1976d2;
+}
+
+.p-button:hover {
+  background-color: #1565c0;
+}

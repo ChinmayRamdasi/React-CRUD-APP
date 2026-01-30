@@ -8,7 +8,7 @@ const Page1 = () => {
         <h2 className='logo'> React JS</h2>
         <h3>Things to Learn</h3>
         <nav>
-           <NavLink to="/basics" className="nav-link">Basics of JavaScript</NavLink>
+           <NavLink to="/basics" className="nav-link">Basics of React JS</NavLink>
             <NavLink to="/components" className="nav-link">AG Grid Integration with CRUD operation</NavLink>
             <NavLink to= "/props" className="nav-link">Prime React Table UI Component</NavLink>
             {/* <li><NavLink to="/events"> Events, Forms and Controlled Inputs</NavLink></li> */}

@@ -7,3 +7,15 @@
 .accordian-collapse{
     color: white;
 }
+
+.card-container{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 50px;
+}
+
+.cards{
+    width: 250px;
+    margin-top: 10px;
+    margin-left: 50px;
+}

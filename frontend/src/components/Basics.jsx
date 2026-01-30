@@ -1,147 +1,116 @@
 import React from 'react'
-import { Collapse } from 'antd';
+import { Card} from 'antd';
+
 import "./Basics.css"
 
+const { Meta } = Card;
+
 const Basics = () => {
-const items = [
-  {
-    key: '1',
-    label: "Basic Concepts",
-    children: (
-        <div>
-          <p>
-            JavaScript is a programming language used to build dynamic and
-            interactive web applications. In React, JavaScript controls how
-            data flows, how components behave, and how user actions are handled.
-          </p>
 
-          <p>
-            JavaScript runs in the browser and allows updating the UI without
-            reloading the page. Modern JavaScript (ES6+) makes the language
-            cleaner and more powerful.
-          </p>
-
-          <p><strong>Variables:</strong> JavaScript uses <code>let</code> and <code>const</code> to store data.</p>
-
-          <p><strong>Data Types:</strong> Number, String, Boolean, Object, Array, Undefined, Null.</p>
-
-          <p><strong>Functions:</strong> Functions define reusable logic. Arrow functions are commonly used in React.</p>
-
-          <p><strong>Objects:</strong> Objects store data in key-value pairs and represent real-world entities.</p>
-
-          <p><strong>Arrays:</strong> Arrays store multiple values and are heavily used in React.</p>
-
-          <p>
-            <strong>Array Methods:</strong> Methods like <code>map</code> and
-            <code>filter</code> are used to transform data and render lists in
-            React.
-          </p>
-
-          <p>
-            <strong>Destructuring:</strong> Used to extract values from objects
-            and arrays in a clean way.
-          </p>
-
-          <p>
-            <strong>Spread Operator:</strong> Used to copy or merge objects and
-            arrays without mutating original data.
-          </p>
-
-          <p>
-            <strong>Async & Await:</strong> Used to handle asynchronous
-            operations like API calls.
-          </p>
-
-          <p>
-            Understanding JavaScript is essential because React is built
-            entirely on JavaScript.
-          </p>
-        </div>),
-  },
-  {
-      key: "2",
-      label: "JavaScript ES6 Features",
-      children: (
-        <div>
-          <p>
-            ES6 introduced modern features that make JavaScript easier to write
-            and maintain. React applications heavily rely on ES6 syntax.
-          </p>
-
-          <p>
-            <strong>Arrow Functions:</strong> Provide a concise way to write
-            functions and automatically bind <code>this</code>.
-          </p>
-
-          <p>
-            <strong>Destructuring:</strong> Extract values from objects and
-            arrays for cleaner code.
-          </p>
-
-          <p>
-            <strong>Spread Operator:</strong> Used to copy or merge arrays and
-            objects without modifying the original data.
-          </p>
-
-          <p>
-            <strong>Template Literals:</strong> Create strings with embedded
-            expressions.
-          </p>
-
-          <p>
-            These features improve readability and are essential for writing
-            clean React code.
-          </p>
-        </div>
-      ),
-    },
-    {
-      key: "3",
-      label: "JavaScript in React Context",
-      children: (
-        <div>
-          <p>
-            React is built entirely on JavaScript. Every component, event, and
-            state update depends on JavaScript logic.
-          </p>
-
-          <p>
-            <strong>State Management:</strong> JavaScript variables stored in
-            state control how the UI updates.
-          </p>
-
-          <p>
-            <strong>Event Handling:</strong> JavaScript functions handle user
-            interactions like clicks and input changes.
-          </p>
-
-          <p>
-            <strong>Rendering Lists:</strong> Array methods like
-            <code> map()</code> are used to render components dynamically.
-          </p>
-
-          <p>
-            <strong>API Integration:</strong> JavaScript handles HTTP requests
-            and responses from backend services.
-          </p>
-
-          <p>
-            Strong JavaScript fundamentals make React development easier and
-            more efficient.
-          </p>
-        </div>
-      ),
-    }
-];
-
-const onChange=(key)=>{
-    console.log(key)
-}
   return (
     <>
-    <h2>Basics about JavaScript</h2>
-    <div className='collapse-div'>
-        <Collapse items={items} onChange={onChange} bordered={false} defaultActiveKey={["1"]} />
+    <div className="card-container">
+      <Card
+        hoverable
+        className='cards'
+        onClick={() => window.open("https://www.geeksforgeeks.org/reactjs/reactjs-basics-concepts-complete-reference/", "_blank")}
+        cover={
+          <img
+            draggable={false}
+            className='cards-image'
+            alt="example"
+            href="https://www.geeksforgeeks.org/reactjs/reactjs-basics-concepts-complete-reference/"
+            src="https://c8.alamy.com/comp/2DAW2TH/react-js-inscription-against-laptop-and-code-background-learn-react-programming-language-computer-courses-training-2DAW2TH.jpg"
+          />
+        }
+      >
+        <Meta onClick={() => window.open("https://www.geeksforgeeks.org/reactjs/reactjs-basics-concepts-complete-reference/", "_blank")} title="React JS Basic Concepts" href="https://www.geeksforgeeks.org/reactjs/reactjs-basics-concepts-complete-reference/" description="https://www.geeksforgeeks.org/reactjs/reactjs-basics-concepts-complete-reference/" />
+      </Card>
+      <Card
+        hoverable
+        className='cards'
+        onClick={() => window.open("https://www.w3schools.com/Js/js_es6.asp", "_blank")}
+        cover={
+          <img
+            className='cards-image'
+            draggable={false}
+            alt="example"
+            href="https://www.w3schools.com/Js/js_es6.asp"
+            src="https://tse2.mm.bing.net/th/id/OIP.nFeC8hhmM9JdP0bx_It84QHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+          />
+        }
+      >
+        <Meta onClick={() => window.open("https://www.w3schools.com/Js/js_es6.asp", "_blank")} title="JavaScript ES6 Features" href="https://www.w3schools.com/Js/js_es6.asp" description="https://www.w3schools.com/Js/js_es6.asp" />
+      </Card>
+      <Card
+        hoverable
+        className='cards'
+        onClick={() => window.open("https://www.w3schools.com/react/react_hooks.asp", "_blank")}
+        cover={
+          <img
+            className='cards-image'
+            draggable={false}
+            alt="example"
+            href="https://www.w3schools.com/react/react_hooks.asp"
+            src="https://blog.openreplay.com/images/understanding-react-hooks/images/hero.png"
+          />
+        }
+      >
+        <Meta onClick={() => window.open("https://www.w3schools.com/react/react_hooks.asp", "_blank")} title="React Hooks" href="https://www.w3schools.com/react/react_hooks.asp" description="https://www.w3schools.com/react/react_hooks.asp" />
+      </Card>
+    </div>
+
+     <div className='card-container'>
+        {/* <Collapse items={items} onChange={onChange} bordered={false} defaultActiveKey={["1"]} /> */}
+
+      <Card
+        hoverable
+        className='cards'
+        onClick={() => window.open("https://www.w3schools.com/react/react_jsx.asp", "_blank")}
+        cover={
+          <img
+            draggable={false}
+            className='cards-image'
+            alt="example"
+            href="https://www.w3schools.com/react/react_jsx.asp"
+            src="https://frontbackgeek.com/wp-content/uploads/2022/02/react-js-basics-and-jsx-1024x576.png"
+          />
+        }
+      >
+        <Meta onClick={() => window.open("https://www.w3schools.com/react/react_jsx.asp", "_blank")} title="React JSX" href="https://www.w3schools.com/react/react_jsx.asp" description="https://www.w3schools.com/react/react_jsx.asp" />
+      </Card>
+      <Card
+        hoverable
+        className='cards'
+        onClick={() => window.open("https://www.w3schools.com/react/react_events.asp", "_blank")}
+        cover={
+          <img
+            className='cards-image'
+            draggable={false}
+            alt="example"
+            href="https://www.w3schools.com/react/react_events.asp"
+            src="https://i.ytimg.com/vi/00UEQqa7Dz8/maxresdefault.jpg"
+          />
+        }
+      >
+        <Meta onClick={() => window.open("https://www.w3schools.com/react/react_events.asp", "_blank")} title="React Events" href="https://www.w3schools.com/react/react_events.asp" description="https://www.w3schools.com/react/react_events.asp" />
+      </Card>
+      <Card
+        hoverable
+        className='cards'
+        onClick={() => window.open("https://www.w3schools.com/react/react_props.asp", "_blank")}
+        cover={
+          <img
+            className='cards-image'
+            draggable={false}
+            alt="example"
+            href="https://www.w3schools.com/react/react_props.asp"
+            src="https://i.ytimg.com/vi/KvapOdsFK5A/maxresdefault.jpg"
+          />
+        }
+      >
+        <Meta onClick={() => window.open("https://www.w3schools.com/react/react_props.asp", "_blank")} title="React Props" href="https://www.w3schools.com/react/react_props.asp" description="https://www.w3schools.com/react/react_props.asp" />
+      </Card>
     </div>
     </>
     

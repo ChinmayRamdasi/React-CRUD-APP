@@ -1,8 +1,10 @@
-// 🔹 GET
-export const fetchUsers = async (setRowData, setLoading) => {
+import { toast } from "react-toastify";
+export const fetchUsers = async (setRowData, setLoading, gridRef) => {
   try {
-    setLoading(true);
+    gridRef.current?.showLoadingOverlay();
     const res = await fetch("http://localhost:5000/users/getUser");
+
+    if(!res.ok) return toast.error("Failed to fetch users")
     const data = await res.json();
 
     setRowData(
@@ -28,6 +30,8 @@ export const postUsers = async ({ name, address }, setLoading, fetchUsersCallbac
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, address })
     });
+
+    toast.success("User Created Successfully!");
     await fetchUsersCallback();
   } catch (e) {
     console.error("Create failed", e);
@@ -55,6 +59,8 @@ export const handleDelete = async (id, fetchUsersCallback) => {
       },
       body: JSON.stringify({ id })
     });
+
+    toast.warning("User Deleted from list")
     fetchUsersCallback();
   } catch (e) {
     console.log(e);
@@ -74,9 +80,10 @@ export const onCellValueChanged = async (params, setRowData, updateUsersCallback
 
   try {
     await updateUsersCallback(updatedrows);
+    toast.success("User updated successfully");
   } catch (e) {
     console.error("Update failed", e);
-
+      toast.error("Failed to update user");
     // rollback safely
     params.node.setData(params.oldData);
   }

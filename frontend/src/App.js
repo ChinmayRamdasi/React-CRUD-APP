@@ -11,6 +11,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DynamicFilters from "./components/DynamicFilters";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/props" element={<Props />} />
       <Route path="/events" element={<Events />} />
       <Route path="/integration" element={<APIIntegration />} />
+      <Route path="/dynamicfilters" element={<DynamicFilters />} />
       </Route>
     </Routes>
     </>

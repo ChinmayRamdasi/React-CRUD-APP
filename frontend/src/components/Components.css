@@ -31,8 +31,13 @@
 .p-button{
   margin-top: 10px;
   border-color: #1976d2;
+  background-color: #1976d2;
 }
 
 .p-button:hover {
   background-color: #1565c0;
+}
+
+.ag-input-field-input{
+  background: #1976d2;
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState,useRef } from "react";
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { AgGridReact } from "ag-grid-react";
+
 import Events from "./Events";
 import "./Components.css";
 import {
@@ -20,8 +21,8 @@ const Components = () => {
 
   const columnDefs = [
     { headerName: "ID", field: "id", width: 80},
-    { headerName: "Name", field: "name", editable: true},
-    { headerName: "Address", field: "address", editable: true},
+    { headerName: "Name", field: "name", editable: true, filter:'agTextColumnFilter'},
+    { headerName: "Address", field: "address", editable: true, filter:'agTextColumnFilter'},
    {
   headerName: "Actions",
   field: "actions",
@@ -54,7 +55,8 @@ const Components = () => {
   const defaultColDef = {
     resizable: true,
     sortable: true,
-    filter: true
+    filter: true,
+    floatingFilter: true,
   };
 
   useEffect(() => {
@@ -65,14 +67,18 @@ const Components = () => {
 
   return (
     <div>
-      <Events onSubmit={(userData) =>postUsers(userData,setRowData,setLoading,() => fetchUsers(setRowData, setLoading, gridRef))} />
-
+      <Events onSubmit={(userData) =>postUsers(userData,setLoading,
+      () => fetchUsers(setRowData, setLoading, gridRef)
+    )
+  }
+/>
             <Button  className="p-button" label="Show Table" icon="pi pi-external-link" onClick={() => setVisible(true)} />
             <Dialog header="Form Table" visible={visible} style={{ width: '50vw' }} onHide={() => {if (!visible) return; setVisible(false); }}>
               <div
                 className="ag-theme-alpine custom-grid"
                 style={{ height: "400px", width: "100%", marginTop: 20 }}
               >
+              
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}

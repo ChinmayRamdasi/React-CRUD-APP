@@ -9,7 +9,6 @@ const Basics = () => {
 
   return (
     <>
-    <h2>Basics about React JS</h2>
     <div className="card-container">
       <Card
         hoverable

@@ -1,6 +1,5 @@
 
 import Components from "./components/Components";
-import Page1 from "./components/Page1";
 import Basics from "./components/Basics";
 import Props from "./components/Props";
 import Events from "./components/Events";
@@ -10,9 +9,13 @@ import  Layout  from "./components/Layout";
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
+    <>
+      <ToastContainer style={{position:"center"}} closeOnClick={true} />
     <Routes>
       <Route element={<Layout />}>
          <Route path="/"/>
@@ -23,6 +26,7 @@ function App() {
       <Route path="/integration" element={<APIIntegration />} />
       </Route>
     </Routes>
+    </>
   );
 }
 

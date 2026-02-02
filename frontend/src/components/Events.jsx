@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 const Events = ({ onSubmit }) => {
   const [error, setError] = useState({});
   const [formData, setFormData] = useState({
     id: "",
     name: "",
-    address: ""
+    address: "",
+    email:"",
+    gender:"Female"
   });
 
   // ✅ Validation function
@@ -20,6 +27,10 @@ const Events = ({ onSubmit }) => {
 
     if (!formData.address.trim()) {
       temp.address = "This Address field is required.";
+    }
+
+    if(!formData.email.trim() || !formData.email.includes("@")){
+      temp.email="Please enter the valid email address"
     }
 
     setError(temp);
@@ -76,9 +87,39 @@ const Events = ({ onSubmit }) => {
         helperText={error.address}
         required
       />
+      <br /><br />
+        <TextField
+        name="email"
+        label="Enter Email Id"
+        variant="outlined"
+        value={formData.email}
+        onChange={handleChange}
+        error={Boolean(error.email)}
+        placeholder={error.email || "Enter Email Id"}
+        helperText={error.email}
+        required
+      />
 
       <br />
+      <br/>
 
+    <FormControl>
+      <FormLabel id="demo-radio-buttons-group-label" style={{fontWeight:"bold"}}>Gender</FormLabel>
+      <RadioGroup
+        aria-labelledby="demo-radio-buttons-group-label"
+        defaultValue="Female"
+        name="gender"
+        onChange={handleChange}
+        value={formData.gender}
+        style={{display:"inline"}}
+      >
+        <FormControlLabel value="Female" control={<Radio />} label="Female" />
+        <FormControlLabel value="Male" control={<Radio />} label="Male" />
+        <FormControlLabel value="Other" control={<Radio />} label="Other" />
+      </RadioGroup>
+    </FormControl>
+
+    <br/>
       <Button
         variant="contained"
         style={{ marginTop: 10 }}

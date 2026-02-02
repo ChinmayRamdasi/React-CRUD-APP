@@ -11,7 +11,9 @@ export const fetchUsers = async (setRowData, setLoading, gridRef) => {
       data.data.map((u) => ({
         id: u.id,
         name: u.name,
-        address: u.address
+        address: u.address,
+        email:u.email,
+        gender:u.gender
       }))
     );
   } catch (e) {
@@ -22,17 +24,23 @@ export const fetchUsers = async (setRowData, setLoading, gridRef) => {
 };
 
 // 🔹 POST
-export const postUsers = async ({ name, address }, setLoading, fetchUsersCallback) => {
+export const postUsers = async ({ name, address,email,gender }, setLoading, fetchUsersCallback) => {
   try {
     setLoading(true);
+    if(!name || !address || !email || !gender || !email.includes("@")){
+      toast.error("Please provide valid inputs")
+      setLoading(false)
+      return;
+    }
+    else{
     await fetch("http://localhost:5000/users/createUser", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, address })
+      body: JSON.stringify({ name, address, email, gender})
     });
-
     toast.success("User Created Successfully!");
     await fetchUsersCallback();
+  }
   } catch (e) {
     console.error("Create failed", e);
   } finally {
@@ -41,11 +49,11 @@ export const postUsers = async ({ name, address }, setLoading, fetchUsersCallbac
 };
 
 // 🔹 UPDATE (ONLY CHANGED FIELDS)
-export const updateUsers = async ({ id, name, address }) => {
+export const updateUsers = async ({ id, name, address,email,gender }) => {
   await fetch("http://localhost:5000/users/updateUser", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id, name, address })
+    body: JSON.stringify({ id, name, address,email,gender })
   });
 };
 

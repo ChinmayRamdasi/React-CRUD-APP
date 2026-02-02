@@ -11,8 +11,8 @@ const createUser= async (req,res)=>{
     if(body.id){
         let query=''
         query=` UPDATE users SET`
-       if(body.name && body.address){
-            query= query.concat(` name='${body.name}',address='${body.address}' WHERE id=${body.id}`)
+       if(body.name && body.address && body.email){
+            query= query.concat(` name='${body.name}',address='${body.address}',email='${body.email}' WHERE id=${body.id}`)
         }
         else{
             new Error("Payload Incorrect")
@@ -27,10 +27,10 @@ const createUser= async (req,res)=>{
         })
     }
     else{
-    if(body.name != "" && body.address != ""){
-            let data= await db.query(`INSERT INTO users(name,address)
+    if(body.name && body.address && body.email && body.gender){
+            let data= await db.query(`INSERT INTO users(name,address,email,gender)
                         VALUES
-                            ('${body.name}','${body.address}');`)
+                            ('${body.name}','${body.address}','${body.email}','${body.gender}');`)
             
         // console.log(data)
 
@@ -38,7 +38,7 @@ const createUser= async (req,res)=>{
                 msg:"Inserted"})
     }
     else{
-        throw new Error("Payload Incorrect")
+        return res.json({error:"Payload Incorrect"})
     }
     }
 }
@@ -58,7 +58,8 @@ const getUser=async(req,res)=>{
         
         const db= await connectDB()
 
-        let query=`select count(*) OVER() as totalCount ,name,address,id from sample.users group by name,address,id`
+        let query=`select count(*) OVER() as totalCount ,name,address,id,email,gender from sample.users 
+        group by name,address,id,email,gender`
 
         if(_get(filters,"pageNo")){
             query= query.concat(` limit ${limit} OFFSET ${offset}`)

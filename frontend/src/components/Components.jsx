@@ -23,6 +23,8 @@ const Components = () => {
     { headerName: "ID", field: "id", width: 80},
     { headerName: "Name", field: "name", editable: true, filter:'agTextColumnFilter'},
     { headerName: "Address", field: "address", editable: true, filter:'agTextColumnFilter'},
+    {headerName: "Email", field: "email", editable: true, filter:'agTextColumnFilter'},
+    {headerName:"Gender", field:"gender",filter:'agTextColumnFilter'},
    {
   headerName: "Actions",
   field: "actions",
@@ -73,7 +75,7 @@ const Components = () => {
   }
 />
             <Button  className="p-button" label="Show Table" icon="pi pi-external-link" onClick={() => setVisible(true)} />
-            <Dialog header="Form Table" visible={visible} style={{ width: '50vw' }} onHide={() => {if (!visible) return; setVisible(false); }}>
+            <Dialog header="Form Table" visible={visible} style={{ width: '70vw' }} onHide={() => {if (!visible) return; setVisible(false); }}>
               <div
                 className="ag-theme-alpine custom-grid"
                 style={{ height: "400px", width: "100%", marginTop: 20 }}

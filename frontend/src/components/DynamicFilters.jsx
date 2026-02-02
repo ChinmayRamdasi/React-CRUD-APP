@@ -22,17 +22,19 @@ const DynamicFilters = () => {
 
     const [country,setCountry]=useState("");
     const [city,setCity]=useState("");
-
-    const [selectedCities,setSelectedCities]=useState([])
-    const [availableCities,setAvailableCities]=useState([])
     const [otherCountry,setOtherCountry]=useState('')
+    
+    // Get all cities from all countries
+    const allCities = Object.values(cities).flat()
+    
+    // Get available cities based on selected country
+    const availableCities = country && country !== "Other" ? cities[country] : allCities
 
 
     const handleCountryChange=(e)=>{
         const selectedCountry=e.target.value
         setCountry(selectedCountry)
-        setAvailableCities(cities[selectedCountry] || [])
-        setSelectedCities('')
+        setCity('')
 
         if(selectedCountry==="Other"){
             setOtherCountry('')
@@ -41,9 +43,20 @@ const DynamicFilters = () => {
 
 
     const handleCityChange=(e)=>{
+        console.log(e)
         let selectedCity=e.target.value
         console.log(selectedCity)
         setCity(selectedCity)
+        
+        // Find which country the selected city belongs to
+        for(let countryName in cities){
+            const cityExists = cities[countryName].find(c => c.name === selectedCity)
+            if(cityExists){
+                setCountry(countryName)
+               // setSelectedCities(cities[countryName])
+                break
+            }
+        }
     }
     const handleOtherCountryChange=(e)=>{
         setOtherCountry(e.target.value)

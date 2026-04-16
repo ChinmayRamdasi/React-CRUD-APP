@@ -16,11 +16,14 @@ import {
  Pie,
  Cell
 } from "recharts";
+import "./APIIntegration.css"
 
 
 const APIIntegration = () => {
   const [loading,setLoading]=useState(false)
   const [graph, setGraph]= useState([])
+  const [filters,setFilters]=useState({ date:"All"})
+  const [filterOptions,setFilterOptions]=useState([])
   const [activeIndex,setActiveIndex]=useState(0)
 
 
@@ -45,34 +48,81 @@ const APIIntegration = () => {
 ];
 
 
-  useEffect(() => {
-      fetchGraph();
-    }, []);
+ useEffect(() => {
+    const fetchInitialData = async () => {
+    try {
+      setLoading(true);
 
+      const res = await fetch("http://localhost:5000/graph/getGraph");
+      const data = await res.json();
 
-const fetchGraph= async ()=>{
-  try{
-    setLoading(true)
-  const res= await fetch("http://localhost:5000/graph/getGraph")
+      const allDates = data.data.map((item) => item.date);
+      setFilterOptions(allDates);
 
-  const data= await res.json()
-
-  setGraph(data.data.map((e)=>({
-    date:e.date,
-    value1:e.value1,
-    value2:e.value2
-  })))
-}
-   catch (e) {
-      console.error("Fetch failed", e);
+      if (allDates.length > 0) {
+        setFilters((prev) => ({ ...prev, date: filters.date === "All" ? "All" : allDates[0] }));
+      }
+    } catch (e) {
+      console.error(e);
     } finally {
       setLoading(false);
     }
-}
+  };
+
+  fetchInitialData();
+  },[]);
+
+
+  useEffect(() => {
+  if (!filters.date) return;
+
+  const fetchGraphByDate = async () => {
+    try {
+      setLoading(true);
+
+      console.log("Calling API with date:", filters.date); // 👈 debug
+
+      const res = await fetch(
+        `http://localhost:5000/graph/getGraph?date=${filters.date==="All"?"All":filters.date}`
+      );
+
+      const data = await res.json();
+
+      setGraph(
+        data.data.map((e) => ({
+          date: e.date,
+          value1: e.value1,
+          value2: e.value2,
+        }))
+      );
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchGraphByDate();
+}, [filters.date]); // 🔥 THIS is the key
+
+
+
 
 
 
 return (
+
+  <div>
+    <h2>API Integration with Recharts</h2>
+    <label style={{fontWeight:"bold", fontSize:"larger"}}>Filter by Date:</label>
+    <select value={filters.date} className="filter-dropdown" onChange={(e)=>setFilters({ date: e.target.value})}>
+      <option className="filter-dropdown"  value="All">All Dates</option>
+      {filterOptions.map((date, index) => (
+        <option key={index} className="filter-dropdown" value={date}>
+          {date}
+        </option>
+      ))}
+    </select>
   <div style={{ display: "flex", width: "100%", height: "800px", gap: "10px" }}>
     
     {/* LEFT COLUMN – 2 GRAPHS */}
@@ -80,6 +130,7 @@ return (
       
       {/* LINE CHART */}
       <div style={{ flex: 1, minHeight: 0 }}>
+        <h2 style={{textAlign:"center"}}>Line Chart</h2>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={graph}
@@ -92,18 +143,20 @@ return (
               textAnchor="end"
               height={80}
               interval={0}
+              style={{fontWeight:"bold"}}
             />
-            <YAxis />
+            <YAxis style={{fontWeight:"bold"}} />
             <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="value1" stroke="#82ca9d" />
-            <Line type="linear" dataKey="value2" stroke="blue" />
+            <Legend/>
+            <Line  style={{fontWeight:"bold"}} type="monotone" dataKey="value1" stroke="#82ca9d" />
+            <Line  style={{fontWeight:"bold"}} type="linear" dataKey="value2" stroke="blue" />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
       {/* BAR CHART */}
       <div style={{ flex: 1, minHeight: 0 }}>
+          <h2 style={{textAlign:"center",marginTop:"100px"}}>Bar Chart</h2>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={graph}>
             <XAxis
@@ -111,8 +164,9 @@ return (
               interval={0}
               textAnchor="end"
               height={80}
+              style={{fontWeight:"bold"}}
             />
-            <YAxis />
+            <YAxis style={{fontWeight:"bold"}} />
             <Tooltip />
             <Legend />
             <Bar dataKey="value1" fill="#8884d8" />
@@ -127,6 +181,7 @@ return (
     <div style={{ flex:1, display: "flex", flexDirection: "column", gap: "10px" }}>
 
       <div style={{flex:1, minHeight:0}}>
+         <h2 style={{textAlign:"center"}}>Area Chart</h2>
            <ResponsiveContainer>
           <AreaChart data={graph}>
             <defs>
@@ -141,8 +196,8 @@ return (
             </defs>
 
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
+            <XAxis style={{fontWeight:"bold"}} dataKey="date" />
+            <YAxis style={{fontWeight:"bold"}} />
             <Tooltip />
             <Legend />
             <Area
@@ -162,7 +217,9 @@ return (
       </div>
      
     <div style={{flex:1,minHeight:0}}>
+       <h2 style={{textAlign:"center", marginTop:"100px"}}>Pie Chart</h2>
       <ResponsiveContainer>
+       
   <PieChart>
     <Pie
       activeIndex={activeIndex}
@@ -173,6 +230,7 @@ return (
       nameKey="date"
       outerRadius={100}
       onMouseEnter={onPieEnter}
+      style={{fontWeight:"bold"}}
     >
       {graph.map((_, index) => (
         <Cell
@@ -189,6 +247,7 @@ return (
     
     </div>
 
+  </div>
   </div>
 );
 

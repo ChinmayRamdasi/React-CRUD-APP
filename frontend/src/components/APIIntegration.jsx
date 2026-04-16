@@ -11,14 +11,38 @@ import {
  BarChart,
  Bar,
  AreaChart,
- Area
+ Area,
+ PieChart,
+ Pie,
+ Cell
 } from "recharts";
 
 
 const APIIntegration = () => {
   const [loading,setLoading]=useState(false)
   const [graph, setGraph]= useState([])
+  const [activeIndex,setActiveIndex]=useState(0)
 
+
+  const onPieEnter=(_,index)=>{
+    setActiveIndex(index)
+  }
+
+  
+    const data = [
+        { name: 'Geeksforgeeks', students: 400 },
+        { name: 'Technical scripter', students: 700 },
+        { name: 'Geek-i-knack', students: 200 },
+        { name: 'Geek-o-mania', students: 1000 }
+    ];
+   const COLORS = [
+  "#f59e0b",
+  "#6366f1",
+  "#22c55e",
+  "#ef4444",
+  "#0ea5e9",
+  "#a855f7",
+];
 
 
   useEffect(() => {
@@ -49,10 +73,10 @@ const fetchGraph= async ()=>{
 
 
 return (
-  <div style={{ display: "flex", width: "100%", height: "800px", gap: "16px" }}>
+  <div style={{ display: "flex", width: "100%", height: "800px", gap: "10px" }}>
     
     {/* LEFT COLUMN – 2 GRAPHS */}
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "16px" }}>
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "45px" }}>
       
       {/* LINE CHART */}
       <div style={{ flex: 1, minHeight: 0 }}>
@@ -80,7 +104,7 @@ return (
 
       {/* BAR CHART */}
       <div style={{ flex: 1, minHeight: 0 }}>
-        <ResponsiveContainer width="80%" height="80%">
+        <ResponsiveContainer width="100%" height="100%">
           <BarChart data={graph}>
             <XAxis
               dataKey="date"
@@ -99,9 +123,11 @@ return (
 
     </div>
 
-    {/* RIGHT COLUMN – 1 GRAPH */}
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
-        <ResponsiveContainer width="80%" height="45%">
+    {/* RIGHT COLUMN – 2 GRAPHS */}
+    <div style={{ flex:1, display: "flex", flexDirection: "column", gap: "10px" }}>
+
+      <div style={{flex:1, minHeight:0}}>
+           <ResponsiveContainer>
           <AreaChart data={graph}>
             <defs>
               <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
@@ -133,6 +159,34 @@ return (
             />
           </AreaChart>
         </ResponsiveContainer>
+      </div>
+     
+    <div style={{flex:1,minHeight:0}}>
+      <ResponsiveContainer>
+  <PieChart>
+    <Pie
+      activeIndex={activeIndex}
+      data={graph}
+      labelLine={true}
+    label={({ date, value1 }) => `${date}: ${value1}`}
+      dataKey="value2"
+      nameKey="date"
+      outerRadius={100}
+      onMouseEnter={onPieEnter}
+    >
+      {graph.map((_, index) => (
+        <Cell
+          key={`cell-${index}`}
+          fill={COLORS[index % COLORS.length]}
+        />
+      ))}
+    </Pie>
+    <Tooltip />
+    <Legend />
+  </PieChart>
+  </ResponsiveContainer>
+    </div>
+    
     </div>
 
   </div>

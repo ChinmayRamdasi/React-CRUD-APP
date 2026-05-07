@@ -5,3 +5,23 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+
+
+
+
+
+.header{
+    width:200px;
+    height: 250px;
+    text-align: center;
+    border: 10px solid #ccc;
+}
+
+
+.flex-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:50px;
+    margin-bottom: 50px;
+}

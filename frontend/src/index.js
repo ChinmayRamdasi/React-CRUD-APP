@@ -12,26 +12,19 @@ import { ModuleRegistry } from "ag-grid-community";
 import { AllCommunityModule } from "ag-grid-community";
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <Provider store={store}>
   <BrowserRouter>
     <App />
   </BrowserRouter>
-  //     <Browser
-  // Router>
-  //   <Routes>
-  //     <Route path="/" element={<Page1 />} />
-  //     <Route path="/basics" element={<Basics />} />
-  //     <Route path="/components" element={<Components/>} />
-  //     <Route path="/props" element={<Props />} />
-  //     <Route path="/events" element={<Events />} />
-  //     <Route path="/integration" element={<APIIntegration />} />
-  //   </Routes>
-  // </BrowserRouter>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

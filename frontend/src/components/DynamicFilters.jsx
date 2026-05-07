@@ -28,35 +28,44 @@ const DynamicFilters = () => {
 
 
     return (
-        <div>
-            <h6>Count:{count}</h6>
-            <h6>Decrement Count:{decrementCount}</h6>
-            <button onClick={handleClick}>Increment</button>
-            <button onClick={handleDecrement}>Decrement</button>
+        <div className='container-flex'>
+           <div className='flex-body'> 
+            <div className='header'>
+              <p>HEADER 1</p>
+            </div>
+            <div className='header'>
+              <p>HEADER 2</p>
+            </div>
+            <div className='header'>
+              <p>HEADER 3</p>
+            </div>
+            </div>
 
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search country..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        />
-      {/* Dropdown */}
-      <select
-        className="dropdown"
-        value={selected}
-        onChange={(e) => setSelected(e.target.value)}
-      >
-        <option value="">Select Country</option>
-
-        {filteredList.map((country) => (
-          <option key={country.id} value={country.name}>
-            {country.name}
-          </option>
-        ))}
-        
-      </select>
+        <div className='flex-body'>
+            <div className='header'>
+              <p>HEADER 1</p>
+            </div>
+            <div className='header'>
+              <p>HEADER 2</p>
+            </div>
+            <div className='header'>
+              <p>HEADER 3</p>
+            </div>
         </div>
+
+        <div className='flex-body'>
+            <div className='header'>
+              <p>HEADER 1</p>
+            </div>
+            <div className='header'>
+              <p>HEADER 2</p>
+            </div>
+            <div className='header'>
+              <p>HEADER 3</p>
+            </div>
+        </div>
+      </div>  
+
     )
 // //     const countries=[
 // //         {id:1,name:"USA"},

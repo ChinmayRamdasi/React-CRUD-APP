@@ -126,12 +126,12 @@ return (
   <div style={{ display: "flex", width: "100%", height: "800px", gap: "10px" }}>
     
     {/* LEFT COLUMN – 2 GRAPHS */}
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "45px" }}>
+    <div style={{flex: 1, display: "flex", flexDirection: "column", gap: "45px" }}>
       
       {/* LINE CHART */}
-      <div style={{ flex: 1, minHeight: 0 }}>
-        <h2 style={{textAlign:"center"}}>Line Chart</h2>
-        <ResponsiveContainer width="100%" height="100%">
+      <div style={{ height:"600px",border:"2px solid black", minHeight: 0 }}>
+        <h3 style={{textAlign:"center"}}>Line Chart</h3>
+        <ResponsiveContainer width="90%" height="80%">
           <LineChart
             data={graph}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -155,8 +155,8 @@ return (
       </div>
 
       {/* BAR CHART */}
-      <div style={{ flex: 1, minHeight: 0 }}>
-          <h2 style={{textAlign:"center",marginTop:"100px"}}>Bar Chart</h2>
+      <div style={{ height:"600px" ,border:"2px solid black", minHeight: 0 }}>
+          <h3 style={{textAlign:"center"}}>Bar Chart</h3>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={graph}>
             <XAxis
@@ -178,11 +178,11 @@ return (
     </div>
 
     {/* RIGHT COLUMN – 2 GRAPHS */}
-    <div style={{ flex:1, display: "flex", flexDirection: "column", gap: "10px" }}>
+    <div style={{ flex:1, display: "flex", flexDirection: "column", gap: "45px" }}>
 
-      <div style={{flex:1, minHeight:0}}>
-         <h2 style={{textAlign:"center"}}>Area Chart</h2>
-           <ResponsiveContainer>
+      <div style={{height:"600px" ,border:"2px solid black", minHeight:0}}>
+         <h3 style={{textAlign:"center"}}>Area Chart</h3>
+           <ResponsiveContainer width="90%" height="80%">
           <AreaChart data={graph}>
             <defs>
               <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
@@ -216,16 +216,16 @@ return (
         </ResponsiveContainer>
       </div>
      
-    <div style={{flex:1,minHeight:0}}>
-       <h2 style={{textAlign:"center", marginTop:"100px"}}>Pie Chart</h2>
-      <ResponsiveContainer>
+    <div style={{height:"600px" ,border:"2px solid black", minHeight:0}}>
+       <h3 style={{textAlign:"center"}}>Pie Chart</h3>
+      <ResponsiveContainer width="90%" height="80%">
        
   <PieChart>
     <Pie
       activeIndex={activeIndex}
       data={graph}
       labelLine={true}
-    label={({ date, value1 }) => `${date}: ${value1}`}
+    label={({ date, value2 }) => `${date}: ${value2}`}
       dataKey="value2"
       nameKey="date"
       outerRadius={100}

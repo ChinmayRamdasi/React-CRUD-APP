@@ -3,6 +3,7 @@ import Components from "./components/Components";
 import Basics from "./components/Basics";
 import Props from "./components/Props";
 import Events from "./components/Events";
+import TodoApp from "./components/todoApp";
 import APIIntegration from "./components/APIIntegration";
 import { Route, Routes } from "react-router-dom";
 import  Layout  from "./components/Layout";
@@ -26,6 +27,7 @@ function App() {
       <Route path="/events" element={<Events />} />
       <Route path="/integration" element={<APIIntegration />} />
       <Route path="/dynamicfilters" element={<DynamicFilters />} />
+      <Route path="/reduxstore" element={<TodoApp />} />
       </Route>
     </Routes>
     </>

@@ -186,12 +186,12 @@ return (
           <AreaChart data={graph}>
             <defs>
               <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f59e0b" />
-                <stop offset="95%" stopColor="#f59e0b" />
+                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
               </linearGradient>
               <linearGradient id="color2" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#94a3b8" />
-                <stop offset="95%" stopColor="#94a3b8" />
+                <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#94a3b8" stopOpacity={0} />
               </linearGradient>
             </defs>
 
@@ -203,13 +203,13 @@ return (
             <Area
               type="monotone"
               dataKey="value1"
-              stroke="#f59e0b"
+              stroke="#8884d8"
               fill="url(#colorUsers)"
             />
             <Area
               type="monotone"
               dataKey="value2"
-              stroke="rgba(102, 102, 255, 0.8)"
+              stroke="#94a3b8"
               fill="url(#color2)"
             />
           </AreaChart>

@@ -17,7 +17,7 @@ const Page1 = () => {
             <NavLink to= "/props" className="nav-link"><span className="link-icon">P</span><span className="link-text">Prime React Table UI Component</span></NavLink>
             {/* <li><NavLink to="/events"> Events, Forms and Controlled Inputs</NavLink></li> */}
             <NavLink to="/integration" className="nav-link"><span className="link-icon">I</span><span className="link-text">API Integration with Recharts Charts Library</span></NavLink>
-            <NavLink to="/dynamicfilters" className="nav-link"><span className="link-icon">D</span><span className="link-text">Dynamic Cascading Filters</span></NavLink>
+            <NavLink to="/dynamicfilters" className="nav-link"><span className="link-icon">D</span><span className="link-text">Flexbox Card CSS</span></NavLink>
             <NavLink to ="reduxstore" className="nav-link"><span className="link-icon">R</span><span className="link-text">Redux Store with React-Redux Toolkit</span></NavLink>
         </nav>
     </aside>

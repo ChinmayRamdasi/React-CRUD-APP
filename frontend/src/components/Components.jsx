@@ -2,6 +2,7 @@ import React, { useEffect, useState,useRef } from "react";
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { AgGridReact } from "ag-grid-react";
+import {useSelector,useDispatch} from "react-redux";
 
 import Events from "./Events";
 import "./Components.css";
@@ -9,14 +10,17 @@ import {
   fetchUsers,
   postUsers,
   handleDelete,
-  updateUsers,
+  updateUsersThunk,
   onCellValueChanged
 } from "../api/integration";
 
 const Components = () => {
-  const [rowData, setRowData] = useState([]);
-  const gridRef = useRef(null); 
-  const [loading, setLoading] = useState(false);
+   const [rowData, setRowData] = useState([]);
+   const gridRef = useRef(null); 
+   const [loader, setLoading] = useState(false);
+  const {users,loading,count}=useSelector((state)=>state.fetchUser)
+  //const { editloading, success, errorMsg } = useSelector(state => state.updateUser);
+  const dispatch=useDispatch()
   const [visible, setVisible] = useState(false);
 
   const columnDefs = [
@@ -41,7 +45,7 @@ const Components = () => {
         );
 
         if(confirmDelete){
-          handleDelete(params.data.id,()=>fetchUsers(setRowData,setLoading,gridRef))
+          handleDelete(params.data.id,()=>dispatch(fetchUsers()))
         }
       }}
       title="Delete"
@@ -61,15 +65,21 @@ const Components = () => {
   };
 
   useEffect(() => {
-    fetchUsers(setRowData, setLoading, gridRef);
-  }, []);
+    dispatch(fetchUsers());
+  }, [dispatch]);
+
+  // keep local rowData in sync with users from Redux
+  useEffect(() => {
+    if (users && users.length) setRowData(users.map(u => ({ ...u })));
+    else setRowData([]);
+  }, [users]);
 
 
 
   return (
     <div>
       <Events onSubmit={(userData) =>postUsers(userData,setLoading,
-      () => fetchUsers(setRowData, setLoading, gridRef)
+      () => dispatch(fetchUsers())
     )
   }
 />
@@ -86,7 +96,7 @@ const Components = () => {
           defaultColDef={defaultColDef}
           singleClickEdit={true}
           stopEditingWhenCellsLoseFocus={true}
-          onCellValueChanged={(params) => onCellValueChanged(params, setRowData, updateUsers)}
+          onCellValueChanged={(params) => onCellValueChanged(params, setRowData, (updatedRows) => dispatch(updateUsersThunk(updatedRows)))}
           pagination={true}
           paginationPageSize={10}
           onGridReady={(params)=>{
@@ -106,7 +116,7 @@ const Components = () => {
           defaultColDef={defaultColDef}
           singleClickEdit={true}
           stopEditingWhenCellsLoseFocus={true}
-          onCellValueChanged={(params) => onCellValueChanged(params, setRowData, updateUsers)}
+          onCellValueChanged={(params) => onCellValueChanged(params, setRowData, (updatedRows) => dispatch(updateUsersThunk(updatedRows)))}
           pagination={true}
           paginationPageSize={10}
           onGridReady={(params)=>{

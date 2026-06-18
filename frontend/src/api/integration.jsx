@@ -1,32 +1,37 @@
 import { toast } from "react-toastify";
-export const fetchUsers = async (setRowData, setLoading, gridRef) => {
-  try {
-    gridRef.current?.showLoadingOverlay();
-    const res = await fetch("http://localhost:5000/users/getUser");
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 
-    if(!res.ok) return toast.error("Failed to fetch users")
+
+export const fetchUsers = createAsyncThunk(
+  "users/getUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await fetch("http://localhost:5000/users/getUser");
+
+    if(!res.ok) return rejectWithValue("Failed to fetch users")
     const data = await res.json();
 
-    setRowData(
-      data.data.map((u) => ({
-        id: u.id,
-        name: u.name,
-        address: u.address,
-        email:u.email,
-        gender:u.gender
-      }))
-    );
+   return data
+    // setRowData(
+    //   data.data.map((u) => ({
+    //     id: u.id,
+    //     name: u.name,
+    //     address: u.address,
+    //     email:u.email,
+    //     gender:u.gender
+    //   }))
+    // );
   } catch (e) {
     console.error("Fetch failed", e);
-  } finally {
-    setLoading(false);
+    return rejectWithValue("Failed to fetch users");
   }
-};
+});
 
 // 🔹 POST
 export const postUsers = async ({ name, address,email,gender }, setLoading, fetchUsersCallback) => {
   try {
-    setLoading(true);
+    setLoading(true)
     if(!name || !address || !email || !gender || !email.includes("@")){
       toast.error("Please provide valid inputs")
       setLoading(false)
@@ -49,13 +54,43 @@ export const postUsers = async ({ name, address,email,gender }, setLoading, fetc
 };
 
 // 🔹 UPDATE (ONLY CHANGED FIELDS)
-export const updateUsers = async ({ id, name, address,email,gender }) => {
-  await fetch("http://localhost:5000/users/updateUser", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id, name, address,email,gender })
-  });
-};
+// export const updateUsers = async ({ id, name, address,email,gender }) => {
+//   try{
+//     await fetch("http://localhost:5000/users/updateUser", {
+//         method: "PUT",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ id, name, address, email, gender })
+//       });
+//       toast.success("User updated successfully");
+//   }
+//   catch{
+//     toast.error("Failed to update user");
+//   }
+  
+// };
+
+// Async thunk wrapper for Redux usage (returns updated user payload)
+//Redux Actions.
+export const updateUsersThunk = createAsyncThunk(
+  "users/updateUser",
+  async ({ id, name, address, email, gender }, { rejectWithValue }) => {
+    try {
+      const res = await fetch("http://localhost:5000/users/updateUser", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, name, address, email, gender })
+      });
+
+      if (!res.ok) return rejectWithValue('Failed to update user');
+      const data = await res.json();
+      toast.success("User updated successfully");
+      return data;
+    } catch (e) {
+      toast.error("Failed to update user");
+      return rejectWithValue('Failed to update user');
+    }
+  }
+);
 
 // 🔹 DELETE
 export const handleDelete = async (id, fetchUsersCallback) => {
@@ -77,23 +112,23 @@ export const handleDelete = async (id, fetchUsersCallback) => {
 
 // 🔹 AG GRID EDIT HANDLER
 export const onCellValueChanged = async (params, setRowData, updateUsersCallback) => {
-  const updatedrows = params.data;
-
-  // optimistic UI update
+  // copy the AG Grid row data to avoid mutating a potentially frozen object
+  const updatedrows = { ...params.data };
+  
+  // optimistic UI update (use a shallow copy)
   setRowData((prev) =>
     prev.map((row) =>
-      row.id === updatedrows.id ? updatedrows : row
+      row.id === updatedrows.id ? { ...updatedrows } : row
     )
   );
 
   try {
-    await updateUsersCallback(updatedrows);
+    await updateUsersCallback({ ...updatedrows });
     toast.success("User updated successfully");
   } catch (e) {
     console.error("Update failed", e);
-      toast.error("Failed to update user");
+    toast.error("Failed to update user");
     // rollback safely
-    params.node.setData(params.oldData);
+    params.node.setData({ ...params.oldData });
   }
 };
-

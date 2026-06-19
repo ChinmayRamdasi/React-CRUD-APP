@@ -1,10 +1,11 @@
 const express = require("express")
-const {getGraph}=require("../controllers/graph")
+const {getGraph,getDates}=require("../controllers/graph")
 
 const router = express.Router()
 
 
-router.get("/getGraph",getGraph)
+router.post("/getGraph",getGraph)
+router.get("/getDates",getDates)
 
 
 

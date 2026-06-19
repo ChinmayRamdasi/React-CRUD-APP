@@ -17,7 +17,7 @@ import {
 const Components = () => {
    const [rowData, setRowData] = useState([]);
    const gridRef = useRef(null); 
-   const [loader, setLoading] = useState(false);
+   let [loader, setLoading] = useState(false);
   const {users,loading,count}=useSelector((state)=>state.fetchUser)
   //const { editloading, success, errorMsg } = useSelector(state => state.updateUser);
   const dispatch=useDispatch()
@@ -78,7 +78,7 @@ const Components = () => {
 
   return (
     <div>
-      <Events onSubmit={(userData) =>postUsers(userData,setLoading,
+      <Events loader={loader} onSubmit={(userData) =>postUsers(userData,setLoading,
       () => dispatch(fetchUsers())
     )
   }

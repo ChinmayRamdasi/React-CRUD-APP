@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import {
  LineChart,
  Line,
@@ -22,7 +23,7 @@ import "./APIIntegration.css"
 const APIIntegration = () => {
   const [loading,setLoading]=useState(false)
   const [graph, setGraph]= useState([])
-  const [filters,setFilters]=useState({ date:"All"})
+  const [filters,setFilters]=useState({ datesArr:"All"})
   const [filterOptions,setFilterOptions]=useState([])
   const [activeIndex,setActiveIndex]=useState(0)
 
@@ -53,14 +54,14 @@ const APIIntegration = () => {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/graph/getGraph");
+      const res = await fetch("http://localhost:5000/graph/getDates");
       const data = await res.json();
 
-      const allDates = data.data.map((item) => item.date);
-      setFilterOptions(allDates);
+      // const allDates = data.data.map((item) => item.date);
+      setFilterOptions(data.data);
 
-      if (allDates.length > 0) {
-        setFilters((prev) => ({ ...prev, date: filters.date === "All" ? "All" : allDates[0] }));
+      if (data.data.length > 0) {
+        setFilters((prev) => ({ ...prev, date: filters.datesArr === "All" ? "All" : data.data[0] }));
       }
     } catch (e) {
       console.error(e);
@@ -74,16 +75,21 @@ const APIIntegration = () => {
 
 
   useEffect(() => {
-  if (!filters.date) return;
+  if (!filters.datesArr) return;
 
   const fetchGraphByDate = async () => {
     try {
       setLoading(true);
 
-      console.log("Calling API with date:", filters.date); // 👈 debug
+      console.log("Calling API with dates:", filters.datesArr); // 👈 debug
 
       const res = await fetch(
-        `http://localhost:5000/graph/getGraph?date=${filters.date==="All"?"All":filters.date}`
+        `http://localhost:5000/graph/getGraph`,
+        {
+          method:"POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ datesArr: filters.datesArr === "All" ? "All" : filters.datesArr })
+        }
       );
 
       const data = await res.json();
@@ -103,7 +109,7 @@ const APIIntegration = () => {
   };
 
   fetchGraphByDate();
-}, [filters.date]); // 🔥 THIS is the key
+}, [filters.datesArr]); // 🔥 THIS is the key
 
 
 
@@ -115,14 +121,16 @@ return (
   <div>
     <h2>API Integration with Recharts</h2>
     <label style={{fontWeight:"bold", fontSize:"larger"}}>Filter by Date:</label>
-    <select value={filters.date} className="filter-dropdown" onChange={(e)=>setFilters({ date: e.target.value})}>
-      <option className="filter-dropdown"  value="All">All Dates</option>
-      {filterOptions.map((date, index) => (
-        <option key={index} className="filter-dropdown" value={date}>
-          {date}
-        </option>
-      ))}
-    </select>
+    
+<Select
+  isMulti
+  options={filterOptions.map(date => ({ label: date, value: date }))}
+  value={filters.datesArr}
+  onChange={(selected) =>
+    setFilters({ datesArr: selected && selected.length === 0 ? "All" : selected })
+  }
+/>
+
   <div style={{ display: "flex", width: "100%", height: "800px", gap: "10px" }}>
     
     {/* LEFT COLUMN – 2 GRAPHS */}

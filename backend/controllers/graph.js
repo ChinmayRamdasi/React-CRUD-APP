@@ -6,11 +6,11 @@ const getGraph=async(req,res)=>{
     try{
     let db=await connectDB()
 
-    const whereClause= req.query.date=="All"? "" : `WHERE date = '${moment(req.query.date).format("YYYY-MM-DD")}'`
+    let body= req.body
 
-   // console.log(whereClause)
-    let data=await db.query(` SELECT date,value1,value2 from graph_table ${req.query.date ? whereClause : ''} group by date,value1,value2`)
+    const whereClause= body.datesArr==="All"? "" : `WHERE date IN(${body.datesArr.map((e)=>`'${moment(e.value).format("YYYY-MM-DD")}'`).join(`,`)})`
 
+    let data=await db.query(` SELECT date,value1,value2 from graph_table ${body.datesArr ? whereClause : ''} group by date,value1,value2`)
 
     //console.log(data[0])
 
@@ -32,6 +32,21 @@ const getGraph=async(req,res)=>{
     }
 }
 
+const getDates=async(req,res)=>{
+    try{
+    let db=await connectDB()
+
+    let data=await db.query(`SELECT DISTINCT date from graph_table`)
+    
+    const fomattedDates= data[0].map(e=>moment(e.date).format("YYYY-MM"))
+    return res.json({data:fomattedDates})
+    }
+    catch(e){
+        console.log(e)
+    }
+}
 
 
-module.exports={getGraph}
+
+
+module.exports={getGraph,getDates}

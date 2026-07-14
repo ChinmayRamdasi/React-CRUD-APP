@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector,useDispatch } from "react-redux";
- import { addTodo,removeTodo } from "../features/todoApp";
+ import { addTodo,removeTodo } from "../reducers/todoApp";
 
 
  export default function TodoApp(){

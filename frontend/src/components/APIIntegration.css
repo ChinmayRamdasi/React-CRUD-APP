@@ -1,8 +1,11 @@
 .filter-dropdown {
-  padding: 10px;
-  margin-left: 20px;
-  margin-bottom: 20px;
-  width: 200px;
-  font-size: 14px;
-  font-weight: bold;
+  width: 250px;
+  margin-bottom: 30px;
+  margin-top: 10px;
 }
+
+.filter-dropdown__menu {
+  width: 100% !important;
+}
+
+

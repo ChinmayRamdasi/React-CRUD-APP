@@ -123,6 +123,12 @@ return (
     <label style={{fontWeight:"bold", fontSize:"larger"}}>Filter by Date:</label>
     
 <Select
+  className="filter-dropdown"
+  classNamePrefix="filter-dropdown"
+  styles={{
+    container: (provided) => ({ ...provided, width: '250px' }),
+    menu: (provided) => ({ ...provided, width: '250px' }),
+  }}
   isMulti
   options={filterOptions.map(date => ({ label: date, value: date }))}
   value={filters.datesArr}

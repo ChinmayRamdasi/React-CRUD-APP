@@ -1,6 +1,9 @@
 import { toast } from "react-toastify";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 
 
 export const fetchUsers = createAsyncThunk(
@@ -132,3 +135,32 @@ export const onCellValueChanged = async (params, setRowData, updateUsersCallback
     params.node.setData({ ...params.oldData });
   }
 };
+
+
+
+export const downloadExcel= async()=>{
+  try{
+    const res=await fetch("http://localhost:5000/users/getUser")
+
+    const data=await res.json()
+
+    const exportData=data.data.map((e)=>{
+      return{
+        Name:e.name,
+        Address:e.address,
+        Email:e.email,
+        Gender:e.gender
+      }
+    })
+    const worksheet= XLSX.utils.json_to_sheet(exportData)
+    const workbook= XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Users")
+    XLSX.writeFile(workbook, "users.xlsx")
+  }
+  catch(e){
+    console.error("Download failed", e);
+
+  }
+}
+
+

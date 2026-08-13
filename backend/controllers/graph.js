@@ -32,6 +32,45 @@ const getGraph=async(req,res)=>{
     }
 }
 
+const getKPICard=async(req,res)=>{
+    try{
+    let db=await connectDB()
+
+    let body= req.body
+
+    const whereClause= body.datesArr==="All"? "" : `WHERE date IN(${body.datesArr.map((e)=>`'${moment(e.value).format("YYYY-MM-DD")}'`).join(`,`)})`
+
+    let data=await db.query(` SELECT date,value1,value2 from graph_table ${body.datesArr ? whereClause : ''} group by date,value1,value2`)
+
+    //console.log(data[0])
+
+    let reduceData=data[0].reduce((acc,e)=>{
+        let existingEntry=acc.find(entry=>entry.date===moment(e.date).format("YYYY-MM"))
+        if(existingEntry){
+            existingEntry.value1+=parseInt(e.value1)
+            existingEntry.value2+=parseInt(e.value2)
+        } else {
+            acc.push({ ...e })
+        }
+        return acc
+    }, [])
+
+    console.log(reduceData)
+    return res.json({data:[{
+        title:"Value 1",
+        value:reduceData.reduce((acc,e)=>acc + e.value1,0)
+    },
+    {
+        title:"Value 2",
+        value:reduceData.reduce((acc,e)=>acc+e.value2,0)
+    }
+]})
+    }
+    catch(e){
+        console.log(e)
+    }
+}
+
 const getDates=async(req,res)=>{
     try{
     let db=await connectDB()
@@ -49,4 +88,4 @@ const getDates=async(req,res)=>{
 
 
 
-module.exports={getGraph,getDates}
+module.exports={getGraph,getDates,getKPICard}

@@ -18,6 +18,7 @@ import {
  Cell
 } from "recharts";
 import "./APIIntegration.css"
+import { KPICard } from "./KPICards";
 
 
 const APIIntegration = () => {
@@ -26,6 +27,7 @@ const APIIntegration = () => {
   const [filters,setFilters]=useState({ datesArr:"All"})
   const [filterOptions,setFilterOptions]=useState([])
   const [activeIndex,setActiveIndex]=useState(0)
+  const [kpiData,setKpiData]=useState([])
 
 
   const onPieEnter=(_,index)=>{
@@ -112,14 +114,32 @@ const APIIntegration = () => {
 }, [filters.datesArr]); // 🔥 THIS is the key
 
 
+useEffect(()=>{
+  const fetchKPIData=async()=>{
+    try{
+      setLoading(true)
 
-
+      const res=await fetch("http://localhost:5000/graph/getKPICard",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({datesArr:filters.datesArr==="All" ? "All" : filters.datesArr})
+      })
+      const data=await res.json()
+      setKpiData(data.data)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setLoading(false)
+    }
+  }
+  fetchKPIData()
+},[filters.datesArr])
 
 
 return (
 
   <div>
-    <h2>API Integration with Recharts</h2>
+    <h2>Data visualisation using Recharts</h2>
     <label style={{fontWeight:"bold", fontSize:"larger"}}>Filter by Date:</label>
     
 <Select
@@ -137,6 +157,12 @@ return (
   }
 />
 
+<h3 className="headers">KPI Cards</h3>
+<div style={{ display:"flex",gap:"20px",padding: "20px" }}>
+  {kpiData.map((key,index)=>{
+    return <KPICard key={index} title={key.title} value={key.value} />
+  })}
+    </div>
   <div style={{ display: "flex", width: "100%", height: "800px", gap: "10px" }}>
     
     {/* LEFT COLUMN – 2 GRAPHS */}

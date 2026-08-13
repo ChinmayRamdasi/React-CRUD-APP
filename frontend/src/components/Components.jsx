@@ -5,13 +5,15 @@ import { AgGridReact } from "ag-grid-react";
 import {useSelector,useDispatch} from "react-redux";
 
 import Events from "./Events";
+import "../assets/download.png"
 import "./Components.css";
 import {
   fetchUsers,
   postUsers,
   handleDelete,
   updateUsersThunk,
-  onCellValueChanged
+  onCellValueChanged,
+  downloadExcel
 } from "../api/integration";
 
 const Components = () => {
@@ -77,53 +79,43 @@ const Components = () => {
 
 
   return (
-    <div>
-      <Events loader={loader} onSubmit={(userData) =>postUsers(userData,setLoading,
-      () => dispatch(fetchUsers())
-    )
-  }
-/>
-            <Button  className="p-button" label="Show Table" icon="pi pi-external-link" onClick={() => setVisible(true)} />
-            <Dialog header="Form Table" visible={visible} style={{ width: "60vw" }} onHide={() => {if (!visible) return; setVisible(false); }}>
-              <div
-                className="ag-theme-alpine custom-grid"
-                style={{ height: "400px", width: "100%", marginTop: 20 }}
-              >
-              
-        <AgGridReact
-          rowData={rowData}
-          columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          singleClickEdit={true}
-          stopEditingWhenCellsLoseFocus={true}
-          onCellValueChanged={(params) => onCellValueChanged(params, setRowData, (updatedRows) => dispatch(updateUsersThunk(updatedRows)))}
-          pagination={true}
-          paginationPageSize={10}
-          onGridReady={(params)=>{
-            gridRef.current=params.api;
-          }}
+    <div className="form-table-layout">
+      <div className="form-panel">
+        <Events
+          loader={loader}
+          onSubmit={(userData) =>
+            postUsers(userData, setLoading, () => dispatch(fetchUsers()))
+          }
         />
-              </div>
-            </Dialog>
-      
-      {/* <div
-        className="ag-theme-alpine custom-grid"
-        style={{ height: "400px", width: "100%", marginTop: 20 }}
+      </div>
+
+      <div
+        className="table-panel ag-theme-alpine custom-grid"
+        style={{ height: "650px", width: "80%", marginTop: 20 }}
       >
+        <div className="downloadPanel">
+          <button className="downloadbutton" onClick={downloadExcel}>
+           <img src={require("../assets/download.png")} alt="Download" style={{height:"20px", width:"28px"}} /> 
+          </button>
+        </div>
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
+          rowHeight={50}
+          headerHeight={50}
           singleClickEdit={true}
           stopEditingWhenCellsLoseFocus={true}
-          onCellValueChanged={(params) => onCellValueChanged(params, setRowData, (updatedRows) => dispatch(updateUsersThunk(updatedRows)))}
+          onCellValueChanged={(params) =>
+            onCellValueChanged(params, setRowData, (updatedRows) => dispatch(updateUsersThunk(updatedRows)))
+          }
           pagination={true}
           paginationPageSize={10}
-          onGridReady={(params)=>{
-            gridRef.current=params.api;
+          onGridReady={(params) => {
+            gridRef.current = params.api;
           }}
         />
-      </div> */}
+      </div>
     </div>
   );
 };

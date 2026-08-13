@@ -1,14 +1,35 @@
+.form-table-layout {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.form-panel {
+  flex: 1 1 250px;
+  min-width: 300px;
+}
+
+.table-panel {
+  flex: 2 1 800px;
+  min-width: 700px;
+  height:1000px;
+}
+
 .custom-grid {
-  font-family: "Roboto", sans-serif;
   border-radius: 12px;
   overflow: hidden;
-  width: fit-content;
+  width: 100%;
+  font-family:"Lucida Sans"
 }
 
 .custom-grid .ag-header {
   background-color: #1976d2;
   color: white;
   font-weight: bold;
+}
+
+.custom-grid .ag-header {
+  border-right: 1px solid #1565c0;
 }
 
 .custom-grid .ag-row:nth-child(even) {
@@ -20,7 +41,7 @@
 }
 
 .custom-grid .ag-cell {
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .p-dialog .p-dialog-header {
@@ -40,4 +61,20 @@
 
 .ag-input-field-input{
   background: #1976d2;
+}
+
+.downloadbutton {
+  background-color: #19d2b6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.downloadPanel {
+  display: flex;
+  justify-content: flex-end;
+  margin:0
 }
